@@ -424,25 +424,6 @@ input {
 .unitpricecolumn {
   width: 15%;
 }
-
-@media (max-width: 450px) {
-  .unitpricecolumn,
-  .quantitycolumn,
-  .totalcolumn {
-    display: none;
-  }
-}
-
-.scrolltable {
-  overflow-y: auto;
-  padding-left: 10px;
-  height: 73%;
-}
-.lineproduct {
-  width: 35%;
-  font-size: 80%;
-  padding-left: 4%;
-}
 .lineunitprice {
   text-align: right;
   width: 15%;
@@ -459,6 +440,30 @@ input {
   padding-left: 4%;
   padding-right: 4%;
 }
+@media (max-width: 450px) {
+  .unitpricecolumn,
+  .quantitycolumn,
+  .totalcolumn {
+    display: none;
+  }
+  .lineunitprice,
+  .linequantity,
+  .lineprice {
+    text-align: left;
+  }
+}
+
+.scrolltable {
+  overflow-y: auto;
+  padding-left: 10px;
+  height: 73%;
+}
+.lineproduct {
+  width: 35%;
+  font-size: 80%;
+  padding-left: 4%;
+}
+
 .detailsline {
   display: inline-flex;
   justify-content: space-around;
