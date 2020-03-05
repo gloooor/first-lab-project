@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width; initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="styles/index.css" />
     <title>Orders Base</title>
   </head>
@@ -12,196 +12,35 @@
         <header class="list-header">
           <div class="list-title">
             <img class="list-title-pic" src="assets/icons/back.svg" />
-            <div class="list-title-name">Orders</div>
+            <div class="list-title-name"></div>
           </div>
           <div class="search">
-            <input class="search-line" type="text" placeholder="Поиск" />
+            <input
+              id="search-line"
+              type="text"
+              placeholder="Поиск"
+              onfocus="hideicon('list');"
+              onblur="showicon('list');"
+            />
             <input
               class="search-img"
               type="image"
+              onclick="setfilter(document.getElementById('search-line'));"
               src="assets/images/search.png"
               width="15"
             />
             <input
               class="search-img"
+              id="reload"
+              onclick="resetfilter(document.getElementById('search-line'));"
               type="image"
               src="assets/images/reload.png"
               width="15"
             />
           </div>
         </header>
-        <div class="items">
-          <div id="1" class="item">
-            <div class="item-first-line">
-              <div class="item-order">
-                <span>Order</span>
-                <span>1</span>
-              </div>
-              <div class="date-order">0.0.2020</div>
-            </div>
-            <p class="name-state">
-              <span class="client-name">client1</span>
-              <span class="order-state">Urgent</span>
-            </p>
-            <p>
-              <span>Shipped:</span>
-              <span class="shipped-date-order">0.0.2020</span>
-            </p>
-          </div>
-          <div id="1" class="item">
-            <div class="item-first-line">
-              <div class="item-order">
-                <span>Order</span>
-                <span>1</span>
-              </div>
-              <div class="date-order">0.0.2020</div>
-            </div>
-            <p class="name-state">
-              <span class="client-name">client1</span>
-              <span class="order-state">Urgent</span>
-            </p>
-            <p>
-              <span>Shipped: </span>
-              <span class="shipped-date-order">0.0.2020</span>
-            </p>
-          </div>
-          <div id="1" class="item">
-            <div class="item-first-line">
-              <div class="item-order">
-                <span>Order</span>
-                <span>1</span>
-              </div>
-              <div class="date-order">0.0.2020</div>
-            </div>
-            <p class="name-state">
-              <span class="client-name">client1</span>
-              <span class="order-state">Urgent</span>
-            </p>
-            <p>
-              <span>Shipped:</span>
-              <span class="shipped-date-order">0.0.2020</span>
-            </p>
-          </div>
-          <div id="1" class="item">
-            <div class="item-first-line">
-              <div class="item-order">
-                <span>Order</span>
-                <span>1</span>
-              </div>
-              <div class="date-order">0.0.2020</div>
-            </div>
-            <p class="name-state">
-              <span class="client-name">client1</span>
-              <span class="order-state">Urgent</span>
-            </p>
-            <p>
-              <span>Shipped:</span>
-              <span class="shipped-date-order">0.0.2020</span>
-            </p>
-          </div>
-          <div id="1" class="item">
-            <div class="item-first-line">
-              <div class="item-order">
-                <span>Order</span>
-                <span>1</span>
-              </div>
-              <div class="date-order">0.0.2020</div>
-            </div>
-            <p class="name-state">
-              <span class="client-name">client1</span>
-              <span class="order-state">Urgent</span>
-            </p>
-            <p>
-              <span>Shipped:</span>
-              <span class="shipped-date-order">0.0.2020</span>
-            </p>
-          </div>
-          <div id="1" class="item">
-            <div class="item-first-line">
-              <div class="item-order">
-                <span>Order</span>
-                <span>1</span>
-              </div>
-              <div class="date-order">0.0.2020</div>
-            </div>
-            <p class="name-state">
-              <span class="client-name">client1</span>
-              <span class="order-state">Urgent</span>
-            </p>
-            <p>
-              <span>Shipped:</span>
-              <span class="shipped-date-order">0.0.2020</span>
-            </p>
-          </div>
-          <div id="1" class="item">
-            <div class="item-first-line">
-              <div class="item-order">
-                <span>Order</span>
-                <span>1</span>
-              </div>
-              <div class="date-order">0.0.2020</div>
-            </div>
-            <p class="name-state">
-              <span class="client-name">client1</span>
-              <span class="order-state">Urgent</span>
-            </p>
-            <p>
-              <span>Shipped:</span>
-              <span class="shipped-date-order">0.0.2020</span>
-            </p>
-          </div>
-          <div id="1" class="item">
-            <div class="item-first-line">
-              <div class="item-order">
-                <span>Order</span>
-                <span>1</span>
-              </div>
-              <div class="date-order">0.0.2020</div>
-            </div>
-            <p class="name-state">
-              <span class="client-name">client1</span>
-              <span class="order-state">Urgent</span>
-            </p>
-            <p>
-              <span>Shipped:</span>
-              <span class="shipped-date-order">0.0.2020</span>
-            </p>
-          </div>
-          <div id="1" class="item">
-            <div class="item-first-line">
-              <div class="item-order">
-                <span>Order</span>
-                <span>1</span>
-              </div>
-              <div class="date-order">0.0.2020</div>
-            </div>
-            <p class="name-state">
-              <span class="client-name">client1</span>
-              <span class="order-state">Urgent</span>
-            </p>
-            <p>
-              <span>Shipped:</span>
-              <span class="shipped-date-order">0.0.2020</span>
-            </p>
-          </div>
-          <div id="1" class="item">
-            <div class="item-first-line">
-              <div class="item-order">
-                <span>Order</span>
-                <span>1</span>
-              </div>
-              <div class="date-order">0.0.2020</div>
-            </div>
-            <p class="name-state">
-              <span class="client-name">client1</span>
-              <span class="order-state">Urgent</span>
-            </p>
-            <p>
-              <span>Shipped:</span>
-              <span class="shipped-date-order">0.0.2020</span>
-            </p>
-          </div>
-        </div>
+        <div class="items">no orders</div>
+
         <footer class="foot1">
           <input
             class="filter"
@@ -226,26 +65,36 @@
             <div class="common">
               <div class="common-first-line">
                 <div class="common-order">
-                  <span>Order</span><span class="order-num">0000</span>
+                  <span>Order</span><span id="orderNum"></span>
                 </div>
                 <div class="common-cost">
-                  <div class="cost">00000</div>
-                  <div class="valute">EUR</div>
+                  <div id="cost"></div>
+                  <div id="valute">EUR</div>
                 </div>
               </div>
-              <div class="common-customer">Customer: <span>customer</span></div>
-              <div class="common-ordered">Ordered: <span>ordered</span></div>
-              <div class="common-shipped">Shipped: <span>shipped</span></div>
+              <div class="common-customer">
+                Customer: <span id="commonCustomer"></span>
+              </div>
+              <div class="common-ordered">
+                Ordered: <span id="commonOrdered"></span>
+              </div>
+              <div class="common-shipped">
+                Shipped: <span id="commonShipped"></span>
+              </div>
             </div>
             <div class="switcher">
               <img
+                onclick="switcher('s');"
                 class="shipped-button"
+                id="shippedButton"
                 src="assets/icons/truck.svg"
                 width="35"
                 height="35"
               />
               <img
+                onclick="switcher('p');"
                 class="processor-button"
+                id="processorButton"
                 src="assets/icons/employee.svg"
                 width="35"
                 height="35"
@@ -253,102 +102,115 @@
             </div>
           </div>
           <div class="down-info">
-            <div class="shipping">
+            <div class="shipping" id="shipping">
               <div class="ship-title">Shipping Address</div>
               <div class="info-line">
                 <div class="left">Name:</div>
-                <div class="right">name</div>
+                <div class="right" id="shippingName"></div>
               </div>
               <div class="info-line">
                 <div class="left">Street:</div>
-                <div class="right">street</div>
+                <div class="right" id="shippingStreet"></div>
               </div>
               <div class="info-line">
                 <div class="left">ZIP Code/City:</div>
-                <div class="right">zipCodeCity</div>
+                <div class="right" id="shippingCity"></div>
               </div>
               <div class="info-line">
                 <div class="left">Region:</div>
-                <div class="right">region</div>
+                <div class="right" id="shippingRegion"></div>
               </div>
               <div class="info-line">
                 <div class="left">Country:</div>
-                <div class="right">country</div>
+                <div class="right" id="shippingCountry"></div>
               </div>
             </div>
-            <div class="processor" id="none">
+            <div class="processor" id="processor">
               <span class="ship-title">Processor Inforamtion</span>
-              <div class="proc-block">
-                <div class="info-common-line">
-                  <div class="info-line">
-                    <div class="left">Name:</div>
-                    <div class="right">name</div>
-                  </div>
-                  <div class="info-line">
-                    <div class="left">Employee Id:</div>
-                    <div class="right">id</div>
-                  </div>
-                  <div class="info-line">
-                    <div class="left">Job Title:</div>
-                    <div class="right">job</div>
-                  </div>
-                  <div class="info-line">
-                    <div class="left">Phone:</div>
-                    <div class="right">phone</div>
-                  </div>
-                </div>
-                <div class="processor-pic">
-                  <img src="assets/images/screen.png" />
-                </div>
+
+              <div class="info-line">
+                <div class="left">Name:</div>
+                <div class="right" id="processorName"></div>
+              </div>
+              <div class="info-line">
+                <div class="left">Employee Id:</div>
+                <div class="right" id="employeeId"></div>
+              </div>
+              <div class="info-line">
+                <div class="left">Job Title:</div>
+                <div class="right" id="processorJobTitle"></div>
+              </div>
+              <div class="info-line">
+                <div class="left">Phone:</div>
+                <div class="right" id="processorPhone"></div>
               </div>
             </div>
           </div>
           <div class="line-items">
-            <div class="table-title">Line Items <span> </span></div>
+            <div class="table-title"></div>
+            <div class="search-table">
+              <input
+                id="table-search-line"
+                type="text"
+                placeholder="Поиск"
+                onfocus="hideicon('table');"
+                onblur="showicon('table');"
+              />
+              <input
+                class="search-img"
+                type="image"
+                onclick="setTableFilter(document.getElementById('table-search-line'));"
+                src="assets/images/search.png"
+                width="15"
+              />
+              <input
+                class="search-img"
+                id="table-reload"
+                onclick="resetTableFilter(document.getElementById('table-search-line'));"
+                type="image"
+                src="assets/images/reload.png"
+                width="15"
+              />
+            </div>
             <div class="table-line">
-              <div class="product-column">Product</div>
-              <div class="column">Unit Price</div>
-              <div class="column">Quantity</div>
-              <div class="column">Total</div>
-            </div>
-            <div class="scroll-table">
-              <div class="details-line">
-                <div class="line-product">product <br />0000</div>
-                <div class="title-hide">Unit Price</div>
-                <div class="line">EUR</div>
-                <div class="title-hide">Quantity</div>
-                <div class="line">00000</div>
-                <div class="title-hide">Total</div>
-                <div class="line">EUR</div>
+              <div class="product-column">
+                Product<input
+                  class="sort-img"
+                  type="image"
+                  id="sortByName"
+                  src="assets/icons/arrows.svg"
+                  width="15"
+                />
               </div>
-              <div class="details-line">
-                <div class="line-product">product <br />0000</div>
-                <div class="title-hide">Unit Price</div>
-                <div class="line">EUR</div>
-                <div class="title-hide">Quantity</div>
-                <div class="line">00000</div>
-                <div class="title-hide">Total</div>
-                <div class="line">EUR</div>
+              <div class="column">
+                Unit Price<input
+                  class="sort-img"
+                  type="image"
+                  id="sortByPrice"
+                  src="assets/icons/arrows.svg"
+                  width="15"
+                />
               </div>
-              <div class="details-line">
-                <div class="line-product">product <br />0000</div>
-                <div class="title-hide">Unit Price</div>
-                <div class="line">EUR</div>
-                <div class="title-hide">Quantity</div>
-                <div class="line">00000</div>
-                <div class="title-hide">Total</div>
-                <div class="line">EUR</div>
+              <div class="column">
+                Quantity<input
+                  class="sort-img"
+                  type="image"
+                  id="sortByQuantity"
+                  src="assets/icons/arrows.svg"
+                  width="15"
+                />
               </div>
-              <div class="details-line">
-                <div class="line-product">product <br />0000</div>
-                <div class="title-hide">Unit Price</div>
-                <div class="line">EUR</div>
-                <div class="title-hide">Quantity</div>
-                <div class="line">00000</div>
-                <div class="title-hide">Total</div>
-                <div class="line">EUR</div>
+              <div class="column">
+                Total<input
+                  class="sort-img"
+                  type="image"
+                  id="sortByTotal"
+                  src="assets/icons/arrows.svg"
+                  width="15"
+                />
               </div>
             </div>
+            <div class="scroll-table" id="scrollTable">no products</div>
           </div>
         </div>
         <footer class="foot2">
@@ -362,5 +224,6 @@
         </footer>
       </div>
     </div>
+    <script src="index.js"></script>
   </body>
 </html>

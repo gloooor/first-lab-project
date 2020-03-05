@@ -1,4 +1,8 @@
 /*common styles*/
+.non-display {
+  display: none;
+}
+
 body {
   display: flex;
   justify-content: center;
@@ -23,7 +27,9 @@ input {
   height: 100vh;
   width: 1200px;
 }
-
+.color {
+  background-color: #a0cfe5;
+}
 /************left block****************/
 
 .orders-list {
@@ -46,6 +52,7 @@ input {
   justify-content: center;
   flex-direction: column;
 }
+
 .list-header {
   background-color: white;
   display: flex;
@@ -81,7 +88,25 @@ input {
   margin: 2px;
   border: 1px solid rgb(196, 196, 204);
 }
-.search-line {
+.search-table {
+  display: inline-flex;
+  height: 22px;
+  width: 200px;
+  margin: 5px 0px 5px 25px;
+  align-items: center;
+  background-color: rgb(250, 250, 250);
+  border: 1px solid rgb(196, 196, 204);
+}
+#table-search-line {
+  padding-top: 1px;
+  margin: 0px 5px 0px 5px;
+  outline: none;
+  border: none;
+  background-color: rgb(250, 250, 250);
+  width: 100%;
+  height: 20px;
+}
+#search-line {
   padding-top: 1px;
   margin: 0px 5px 0px 5px;
   outline: none;
@@ -106,9 +131,11 @@ input {
   height: auto;
   transition: all 0.2s ease-in-out;
   color: #84898e;
+  text-align: start;
 }
 .item:hover {
   background-color: rgb(231, 238, 245);
+  cursor: pointer;
 }
 .item > p {
   font-size: 80%;
@@ -144,6 +171,8 @@ input {
 .items {
   height: 93%;
   overflow-y: auto;
+  text-align: center;
+  color: cadetblue;
 }
 .name-state {
   display: flex;
@@ -180,8 +209,8 @@ input {
   background-color: #edf5f8;
 }
 .down-info {
-  min-height: 180px;
-  height: 20%;
+  min-height: 160px;
+  height: 27%;
 }
 .up-info {
   background-color: #eff4f8;
@@ -208,7 +237,7 @@ input {
 .common-order {
   width: 54%;
   margin-left: 4%;
-  overflow: hidden;
+  word-wrap: break-word;
 }
 .common-cost {
   margin-right: 4%;
@@ -216,15 +245,15 @@ input {
   width: 46%;
   flex-direction: column;
 }
-.cost,
-.valute {
+#cost,
+#valute {
   align-self: flex-end;
 }
 .valute {
   font-size: 10px;
   color: #7f848b;
 }
-.order-num {
+#orderNum {
   padding-left: 5px;
 }
 .common-customer,
@@ -247,6 +276,10 @@ input {
   margin: 10px 10px -2px 25px;
   padding-bottom: 5px;
   border-bottom: 2px solid #e4eaf1;
+}
+.shipped-button:hover,
+.processor-button:hover {
+  cursor: pointer;
 }
 .shipped-button {
   margin-left: 40px;
@@ -281,10 +314,10 @@ input {
 .ship-title {
   display: flex;
   font-size: 110%;
-  padding: 11px;
+  padding: 5px;
   align-items: flex-end;
   height: 24%;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   border-bottom: 1px solid rgb(240, 225, 225);
   color: rgb(78, 78, 78);
 }
@@ -321,7 +354,7 @@ input {
 }
 .table-title {
   height: 20px;
-  padding: 30px 0px 0px 25px;
+  padding: 20px 0px 0px 25px;
   color: rgb(78, 78, 78);
   font-size: 15px;
 }
@@ -330,7 +363,7 @@ input {
   height: 30px;
   border-top: 1px solid #e9eae8;
   border-bottom: 1px solid #e9eae8;
-  margin: 10px 10px 0px 10px;
+  padding: 1px 5px 0px 10px;
   background-color: rgb(245, 245, 245);
   color: rgb(78, 78, 78);
 }
@@ -339,7 +372,7 @@ input {
   width: 25%;
   font-size: 14px;
   display: flex;
-  padding: 5px 15px 0px 5px;
+  padding: 5px 15px 5px 5px;
   text-align: left;
   justify-content: flex-end;
 }
@@ -347,12 +380,14 @@ input {
   justify-content: flex-start;
   padding: 5px 5px 0px 15px;
 }
-.line,
+.line-price,
+.line-quantity,
+.line-total,
 .line-product {
   width: 25%;
   font-size: 14px;
   display: flex;
-  padding: 5px 15px 0px 5px;
+  padding: 0px 15px 0px 5px;
   text-align: left;
   justify-content: flex-end;
 }
@@ -360,10 +395,17 @@ input {
   justify-content: flex-start;
   padding: 5px 5px 0px 15px;
 }
+.sort-img {
+  padding-left: 5px;
+}
 .scroll-table {
   overflow-y: auto;
-  margin: 0px 10px 0px 10px;
+  margin: 0px 0px 0px 10px;
   height: auto;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  color: cadetblue;
 }
 .details-line {
   display: inline-flex;
@@ -383,6 +425,20 @@ input {
   margin: 12px;
 }
 
+.current {
+  background-color: rgb(218, 235, 250);
+  border: 0.5px solid rgb(179, 191, 194);
+  border-left: none;
+  border-right: none;
+}
+
+.nondisplay {
+  display: none;
+}
+
+.borderbottom {
+  border-bottom: 2px solid #a5b1ba;
+}
 /****************keyframes***********************/
 
 @keyframes slidein {
@@ -477,7 +533,12 @@ input {
   .column {
     display: none;
   }
-  .line,
+  .sort-img {
+    display: none;
+  }
+  .line-quantity,
+  .line-total,
+  .line-proce,
   .line-product {
     justify-content: flex-start;
     padding: 5px 15px 0px 5px;
