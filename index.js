@@ -151,7 +151,7 @@ const items = document.querySelector(".items");
 const listTitleName = document.querySelector(".list-title-name");
 const tableTitle = document.querySelector(".table-title");
 const sortByNameBtn = document.querySelector("#sortByName");
-const tableSearchLine = document.getElementById("table-search-line");
+const tableSearchLine = document.querySelector("#table-search-line");
 const sortByPriceBtn = document.querySelector("#sortByPrice");
 const sortByQuantityBtn = document.querySelector("#sortByQuantity");
 const sortByTotalBtn = document.querySelector("#sortByTotal");
@@ -234,6 +234,14 @@ const addToList = (list, order) => {
     newDiv.classList.add("current");
   });
   newDiv.classList.add("item");
+  let stateColor;
+  if (order.OrderInfo.status === "Pending") {
+    stateColor = "orange";
+  } else if (order.OrderInfo.status === "Too late") {
+    stateColor = "red";
+  } else if (order.OrderInfo.status === "Accepted") {
+    stateColor = "green";
+  }
   newDiv.innerHTML = `
     <div class="item-first-line">
     <div class="item-order">
@@ -244,7 +252,7 @@ const addToList = (list, order) => {
   </div>
   <p class="name-state">
     <span class="client-name">${order.OrderInfo.customer}</span>
-    <span class="order-state">${order.OrderInfo.status}</span>
+    <span class="order-state ${stateColor}">${order.OrderInfo.status}</span>
   </p>
   <p>
     <span>Shipped:</span>

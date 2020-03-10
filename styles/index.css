@@ -180,7 +180,9 @@ input {
 .client-name {
   width: 50%;
 }
-.order-state {
+.order-state.red,
+.order-state.orange,
+.order-state.green {
   width: 50%;
   text-align: right;
   color: orange;
@@ -438,6 +440,17 @@ input {
 
 .borderbottom {
   border-bottom: 2px solid #a5b1ba;
+}
+
+.order-state.red {
+  color: red;
+}
+.order-state.orange {
+  color: orange;
+}
+
+.order-state.green {
+  color: green;
 }
 /****************keyframes***********************/
 
