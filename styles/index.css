@@ -70,6 +70,11 @@ input {
   height: 100%;
   padding-left: 7px;
 }
+.info-title-pic {
+  width: 5%;
+  height: 100%;
+  padding-left: 7px;
+}
 .list-title-pic:hover {
   cursor: pointer;
 }
@@ -336,7 +341,7 @@ input {
 .processor-pic {
   width: 30%;
 }
-.right {
+.right-info {
   display: flex;
   justify-content: flex-start;
   width: 80%;
@@ -345,7 +350,7 @@ input {
   padding: 0;
   color: rgb(78, 78, 78);
 }
-.left {
+.left-info {
   display: flex;
   flex: wrap;
   box-sizing: border-box;
@@ -370,7 +375,7 @@ input {
   color: rgb(78, 78, 78);
 }
 .product-column,
-.column {
+.table-column {
   width: 25%;
   font-size: 14px;
   display: flex;
@@ -543,7 +548,7 @@ input {
   .processor-pic {
     display: none;
   }
-  .column {
+  .table-column {
     display: none;
   }
   .sort-img {
@@ -584,11 +589,11 @@ input {
   .processor {
     padding: 0;
   }
-  .left {
+  .left-info {
     width: 100%;
     justify-content: flex-start;
   }
-  .right {
+  .right-info {
     width: 100%;
     margin-left: 0;
   }

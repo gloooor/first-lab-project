@@ -157,6 +157,7 @@ const sortByQuantityBtn = document.querySelector("#sortByQuantity");
 const sortByTotalBtn = document.querySelector("#sortByTotal");
 const hide = document.querySelector("#reload");
 const hideTable = document.querySelector("#table-reload");
+
 let quantityCount = 0;
 let totalCount = 0;
 let priceCount = 0;
@@ -176,8 +177,9 @@ const selectOrder = id => {
 
 const showInfo = orderId => {
   let order = orders.find(el => {
-    return el.id == orderId;
+    return el.id === orderId;
   });
+
   if (order) {
     tableSearchLine.value = "";
     orderNum.innerHTML = order.id;
