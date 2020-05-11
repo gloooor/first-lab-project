@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles/index.css" />
+    <title>Orders Base</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="orders-list">
+        <header class="list-header">
+          <div class="list-title">
+            <img class="list-title-pic" src="assets/icons/arrowl.svg" />
+            <div class="list-title-name"></div>
+          </div>
+          <div class="search">
+            <input
+              id="search-line"
+              type="text"
+              placeholder="Поиск"
+              onfocus="hideicon('list');"
+              onblur="showicon('list');"
+            />
+            <input
+              class="search-img"
+              type="image"
+              onclick="setfilter(document.getElementById('search-line'));"
+              src="assets/images/search.png"
+              width="15"
+            />
+            <input
+              class="search-img"
+              id="reload"
+              onclick="resetfilter(document.getElementById('search-line'));"
+              type="image"
+              src="assets/images/reload.png"
+              width="15"
+            />
+          </div>
+        </header>
+        <div class="items">no orders</div>
+
+        <footer class="foot1">
+          <img
+            class="filter"
+            type="image"
+            src="assets/icons/filter.svg"
+            width="15"
+            height="15"
+            onclick="openForm()"
+          />
+          <input
+            class="some-icon"
+            type="image"
+            src="assets/icons/list.svg"
+            width="15"
+            height="15"
+          />
+        </footer>
+      </div>
+      <div class="order-info">
+        <header class="info-title">
+          <img class="info-title-pic" src="assets/icons/arrowr.svg" /> Order
+        </header>
+        <div class="main">
+          <div class="up-info">
+            <div class="common">
+              <div class="common-first-line">
+                <div class="common-order">
+                  <span>Order</span><span id="orderNum"></span>
+                </div>
+                <div class="common-cost">
+                  <div id="cost"></div>
+                  <div id="valute">EUR</div>
+                </div>
+              </div>
+              <div class="common-customer">
+                Customer: <span id="commonCustomer"></span>
+              </div>
+              <div class="common-ordered">
+                Ordered: <span id="commonOrdered"></span>
+              </div>
+              <div class="common-shipped">
+                Shipped: <span id="commonShipped"></span>
+              </div>
+            </div>
+            <div class="switcher">
+              <img
+                onclick="switcher('s');"
+                class="shipped-button"
+                id="shippedButton"
+                src="assets/icons/truck.svg"
+                width="35"
+                height="35"
+              />
+              <img
+                onclick="switcher('p');"
+                class="processor-button"
+                id="processorButton"
+                src="assets/icons/employee.svg"
+                width="35"
+                height="35"
+              />
+            </div>
+          </div>
+          <div class="down-info">
+            <div class="shipping" id="shipping">
+              <div class="ship-title">Shipping Address</div>
+              <div class="info-line">
+                <div class="left-info">Name:</div>
+                <div class="right-info" id="shippingName"></div>
+              </div>
+              <div class="info-line">
+                <div class="left-info">Street:</div>
+                <div class="right-info" id="shippingStreet"></div>
+              </div>
+              <div class="info-line">
+                <div class="left-info">ZIP Code/City:</div>
+                <div class="right-info" id="shippingCity"></div>
+              </div>
+              <div class="info-line">
+                <div class="left-info">Region:</div>
+                <div class="right-info" id="shippingRegion"></div>
+              </div>
+              <div class="info-line">
+                <div class="left-info">Country:</div>
+                <div class="right-info" id="shippingCountry"></div>
+              </div>
+            </div>
+            <div class="processor" id="processor">
+              <span class="ship-title">Processor Inforamtion</span>
+
+              <div class="info-line">
+                <div class="left-info">FirstName:</div>
+                <div class="right-info" id="processorFirstName"></div>
+              </div>
+              <div class="info-line">
+                <div class="left-info">LastName:</div>
+                <div class="right-info" id="processorLastName"></div>
+              </div>
+              <div class="info-line">
+                <div class="left-info">Adress:</div>
+                <div class="right-info" id="processorAdress"></div>
+              </div>
+              <div class="info-line">
+                <div class="left-info">Phone:</div>
+                <div class="right-info" id="processorPhone"></div>
+              </div>
+              <div class="info-line">
+                <div class="left-info">Email:</div>
+                <div class="right-info" id="processorEmail"></div>
+              </div>
+            </div>
+          </div>
+          <div class="line-items">
+            <div class="table-title"></div>
+            <div class="search-table">
+              <input
+                id="table-search-line"
+                type="text"
+                placeholder="Поиск"
+                onfocus="hideicon('table');"
+                onblur="showicon('table');"
+              />
+              <input
+                class="search-img"
+                type="image"
+                onclick="setTableFilter(document.getElementById('table-search-line'));"
+                src="assets/images/search.png"
+                width="15"
+              />
+              <input
+                class="search-img"
+                id="table-reload"
+                onclick="resetTableFilter(document.getElementById('table-search-line'));"
+                type="image"
+                src="assets/images/reload.png"
+                width="15"
+              />
+            </div>
+            <div class="table-line">
+              <div class="product-column">
+                Product<input
+                  class="sort-img"
+                  type="image"
+                  id="sortByName"
+                  src="assets/icons/arrows.svg"
+                  width="15"
+                />
+              </div>
+              <div class="table-column">
+                Unit Price<input
+                  class="sort-img"
+                  type="image"
+                  id="sortByPrice"
+                  src="assets/icons/arrows.svg"
+                  width="15"
+                />
+              </div>
+              <div class="table-column">
+                Quantity<input
+                  class="sort-img"
+                  type="image"
+                  id="sortByQuantity"
+                  src="assets/icons/arrows.svg"
+                  width="15"
+                />
+              </div>
+              <div class="table-column">
+                Total<input
+                  class="sort-img"
+                  type="image"
+                  id="sortByTotal"
+                  src="assets/icons/arrows.svg"
+                  width="15"
+                />
+              </div>
+            </div>
+            <div class="scroll-table" id="scrollTable">no products</div>
+          </div>
+        </div>
+        <footer class="foot2">
+          <input
+            class="mail"
+            type="image"
+            src="assets/icons/mail.svg"
+            width="15"
+            height="15"
+          />
+        </footer>
+      </div>
+    </div>
+    <form>
+      <label class="form-label">
+        Date:
+        <input type="date" placeholder="Date..." id="date" />
+      </label>
+      <h3>Shipping</h3>
+      <label class="form-label">
+        Address
+        <input placeholder="address..." id="address" />
+      </label>
+      <label class="form-label">
+        ZIP code/City
+        <input type="number" placeholder="zip" id="zip" />
+      </label>
+      <label class="form-label">
+        Region
+        <input type="text" placeholder="region" id="region" />
+      </label>
+      <label class="form-label">
+        Country
+        <input type="text" placeholder="country" id="country" />
+      </label>
+
+      <h3>Processor</h3>
+      <div class="processor-select">
+        <select id="processor-select">
+          <option value="0" disabled selected>Choose processor</option>
+        </select>
+        <button onclick="openLabels()" id="toggleBtn">
+          Create
+        </button>
+      </div>
+      <div class="processor-labels" id="processor-labels">
+        <label class="form-label">
+          FirstName
+          <input placeholder="name..." id="first-name" />
+        </label>
+        <label class="form-label">
+          LastName
+          <input placeholder="name..." id="last-name" />
+        </label>
+        <label class="form-label">
+          CompanyName
+          <input placeholder="name..." id="company" />
+        </label>
+        <label class="form-label">
+          Email
+          <input type="email" placeholder="id" id="email" />
+        </label>
+        <label class="form-label">
+          Phone
+          <input type="text" placeholder="phone" id="phone" />
+        </label>
+      </div>
+      <div class="form-btn-container">
+        <button onclick="closeForm()" type="button">
+          Cancel
+        </button>
+        <button type="submit">
+          Submit
+        </button>
+      </div>
+    </form>
+    <script src="index.js"></script>
+  </body>
+</html>
