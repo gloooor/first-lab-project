@@ -43,26 +43,25 @@
 
         <footer class="foot1">
           <img
-            class="filter"
+            class="add-order"
             type="image"
-            src="assets/icons/filter.svg"
+            src="assets/images/add2.png"
             width="15"
             height="15"
-            onclick="openForm()"
+            onclick="openForm('create')"
           />
           <input
             class="some-icon"
             type="image"
-            src="assets/icons/list.svg"
+            src="assets/images/delete.png"
             width="15"
             height="15"
+            onclick="deleteOrder()"
           />
         </footer>
       </div>
       <div class="order-info">
-        <header class="info-title">
-          <img class="info-title-pic" src="assets/icons/arrowr.svg" /> Order
-        </header>
+        <header class="info-title"><img class="info-title-pic" /> Order</header>
         <div class="main">
           <div class="up-info">
             <div class="common">
@@ -90,7 +89,7 @@
                 onclick="switcher('s');"
                 class="shipped-button"
                 id="shippedButton"
-                src="assets/icons/truck.svg"
+                src="assets/images/bus.png"
                 width="35"
                 height="35"
               />
@@ -98,7 +97,7 @@
                 onclick="switcher('p');"
                 class="processor-button"
                 id="processorButton"
-                src="assets/icons/employee.svg"
+                src="assets/images/customer.png"
                 width="35"
                 height="35"
               />
@@ -106,7 +105,10 @@
           </div>
           <div class="down-info">
             <div class="shipping" id="shipping">
-              <div class="ship-title">Shipping Address</div>
+              <div class="ship-title">
+                <span class="title">Shipping Address</span>
+                <div onclick="openForm()" class="edit">Edit</div>
+              </div>
               <div class="info-line">
                 <div class="left-info">Name:</div>
                 <div class="right-info" id="shippingName"></div>
@@ -129,8 +131,10 @@
               </div>
             </div>
             <div class="processor" id="processor">
-              <span class="ship-title">Processor Inforamtion</span>
-
+              <div class="ship-title">
+                <span class="title"> Processor Inforamtion</span>
+                <div onclick="openForm()" class="edit">Edit</div>
+              </div>
               <div class="info-line">
                 <div class="left-info">FirstName:</div>
                 <div class="right-info" id="processorFirstName"></div>
@@ -155,29 +159,47 @@
           </div>
           <div class="line-items">
             <div class="table-title"></div>
-            <div class="search-table">
-              <input
-                id="table-search-line"
-                type="text"
-                placeholder="Поиск"
-                onfocus="hideicon('table');"
-                onblur="showicon('table');"
-              />
-              <input
-                class="search-img"
-                type="image"
-                onclick="setTableFilter(document.getElementById('table-search-line'));"
-                src="assets/images/search.png"
-                width="15"
-              />
-              <input
-                class="search-img"
-                id="table-reload"
-                onclick="resetTableFilter(document.getElementById('table-search-line'));"
-                type="image"
-                src="assets/images/reload.png"
-                width="15"
-              />
+            <div class="search-block">
+              <span class="search-table">
+                <input
+                  id="table-search-line"
+                  type="text"
+                  placeholder="Поиск"
+                  onfocus="hideicon('table');"
+                  onblur="showicon('table');"
+                />
+                <input
+                  class="search-img"
+                  type="image"
+                  onclick="setTableFilter(document.getElementById('table-search-line'));"
+                  src="assets/images/search.png"
+                  width="15"
+                />
+                <input
+                  class="search-img"
+                  id="table-reload"
+                  onclick="resetTableFilter(document.getElementById('table-search-line'));"
+                  type="image"
+                  src="assets/images/reload.png"
+                  width="15"
+                />
+              </span>
+              <div class="table-forms">
+                <input
+                  onclick="editProductLists()"
+                  type="image"
+                  src="assets/images/edit.png"
+                  width="20"
+                  height="20"
+                />
+                <input
+                  onclick="deleteProductLists()"
+                  type="image"
+                  src="assets/images/close.png"
+                  width="20"
+                  height="20"
+                />
+              </div>
             </div>
             <div class="table-line">
               <div class="product-column">
@@ -185,7 +207,7 @@
                   class="sort-img"
                   type="image"
                   id="sortByName"
-                  src="assets/icons/arrows.svg"
+                  src="assets/images/ascsort.png"
                   width="15"
                 />
               </div>
@@ -194,7 +216,7 @@
                   class="sort-img"
                   type="image"
                   id="sortByPrice"
-                  src="assets/icons/arrows.svg"
+                  src="assets/images/ascsort.png"
                   width="15"
                 />
               </div>
@@ -203,7 +225,7 @@
                   class="sort-img"
                   type="image"
                   id="sortByQuantity"
-                  src="assets/icons/arrows.svg"
+                  src="assets/images/ascsort.png"
                   width="15"
                 />
               </div>
@@ -212,7 +234,7 @@
                   class="sort-img"
                   type="image"
                   id="sortByTotal"
-                  src="assets/icons/arrows.svg"
+                  src="assets/images/ascsort.png"
                   width="15"
                 />
               </div>
@@ -220,46 +242,47 @@
             <div class="scroll-table" id="scrollTable">no products</div>
           </div>
         </div>
-        <footer class="foot2">
-          <input
-            class="mail"
-            type="image"
-            src="assets/icons/mail.svg"
-            width="15"
-            height="15"
-          />
-        </footer>
+        <footer class="foot2"></footer>
       </div>
     </div>
+    <form class="product-lists">
+      <div class="select-products"></div>
+      <div class="containerForProducts">
+        <div class="">
+          <input type="number" id="entered-quantity" placeholder="quantity" />
+        </div>
+        <button class="canc" onclick="closeProductForm()">Cancel</button>
+        <button type="submit">Send</button>
+      </div>
+    </form>
+    <form class="delete-product-lists">
+      <div class="delete-select-products"></div>
+      <div class="delete-containerForProducts">
+        <button class="canc" onclick="closeDeletingForm()">Cancel</button>
+        <button type="submit">Send</button>
+      </div>
+    </form>
     <form>
+      <h3>Order information</h3>
       <label class="form-label">
-        Date:
-        <input type="date" placeholder="Date..." id="date" />
-      </label>
-      <h3>Shipping</h3>
-      <label class="form-label">
-        Address
-        <input placeholder="address..." id="address" />
+        Date of creating:
+        <input type="date" placeholder="Date..." id="creating-date" />
       </label>
       <label class="form-label">
-        ZIP code/City
-        <input type="number" placeholder="zip" id="zip" />
+        Date of shipping:
+        <input type="date" placeholder="Date..." id="shipping-date" />
       </label>
-      <label class="form-label">
-        Region
-        <input type="text" placeholder="region" id="region" />
-      </label>
-      <label class="form-label">
-        Country
-        <input type="text" placeholder="country" id="country" />
-      </label>
-
-      <h3>Processor</h3>
+      <select id="status-select">
+        <option value="Accepted">Accepted</option>
+        <option value="Pending">Pending</option>
+        <option value="Late">Too late</option>
+      </select>
+      <h3>Customer</h3>
       <div class="processor-select">
         <select id="processor-select">
-          <option value="0" disabled selected>Choose processor</option>
+          <option value="0" disabled selected>Choose a customer</option>
         </select>
-        <button onclick="openLabels()" id="toggleBtn">
+        <button id="toggleBtn">
           Create
         </button>
       </div>
@@ -267,22 +290,22 @@
         <label class="form-label">
           FirstName
           <input placeholder="name..." id="first-name" />
-        </label>
-        <label class="form-label">
           LastName
-          <input placeholder="name..." id="last-name" />
-        </label>
-        <label class="form-label">
+          <input placeholder="surname..." id="last-name" />
           CompanyName
-          <input placeholder="name..." id="company" />
-        </label>
-        <label class="form-label">
+          <input placeholder="company..." id="company" />
           Email
           <input type="email" placeholder="id" id="email" />
-        </label>
-        <label class="form-label">
           Phone
           <input type="text" placeholder="phone" id="phone" />
+          Address
+          <input placeholder="address..." id="address" />
+          ZIP code/City
+          <input type="number" placeholder="zip" id="zip" />
+          Region
+          <input type="text" placeholder="region" id="region" />
+          Country
+          <input type="text" placeholder="country" id="country" />
         </label>
       </div>
       <div class="form-btn-container">
@@ -294,6 +317,7 @@
         </button>
       </div>
     </form>
+    <div class="overlay" id="overlay-modal"></div>
     <script src="index.js"></script>
   </body>
 </html>

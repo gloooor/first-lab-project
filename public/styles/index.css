@@ -2,7 +2,6 @@
 .non-display {
   display: none;
 }
-
 body {
   display: flex;
   justify-content: center;
@@ -21,7 +20,19 @@ body {
 input {
   outline: none;
 }
+.overlay {
+  opacity: 0;
+  visibility: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  transition: 0.3s all;
+}
 .container {
+  z-index: 10;
   display: flex;
   background-color: #ffffff;
   height: 100vh;
@@ -96,14 +107,24 @@ input {
   margin: 2px;
   border: 1px solid rgb(196, 196, 204);
 }
+.search-block {
+  display: flex;
+  flex-direction: row;
+}
 .search-table {
   display: inline-flex;
   height: 22px;
-  width: 200px;
+  width: 30%;
   margin: 5px 0px 5px 25px;
-  align-items: center;
   background-color: rgb(250, 250, 250);
   border: 1px solid rgb(196, 196, 204);
+}
+.table-forms {
+  width: 70%;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: flex-end;
+  margin: 7px;
 }
 #table-search-line {
   padding-top: 1px;
@@ -124,6 +145,8 @@ input {
 }
 .search-img {
   margin-right: 5px;
+  height: 20px;
+  width: 20px;
 }
 .current {
   background-color: rgb(218, 235, 250);
@@ -156,7 +179,7 @@ input {
   padding-top: 10px;
   font-size: 20px;
   float: right;
-  width: 30%;
+  width: 40%;
   color: black;
 }
 .shipped-date-order {
@@ -168,8 +191,8 @@ input {
   max-height: 50px;
 }
 .item-order {
-  width: 70%;
-  padding: 7px 7px 7px 15px;
+  width: 60%;
+  padding: 7px 7px 0px 7px;
   text-overflow: ellipsis;
   overflow: hidden;
 }
@@ -321,6 +344,14 @@ input {
   color: rgb(78, 78, 78);
   border-bottom: 1px solid rgb(240, 225, 225);
 }
+.title {
+  width: 80%;
+}
+.edit {
+  width: 20%;
+  text-align: right;
+  color: #23a8f2;
+}
 .ship-title {
   display: flex;
   font-size: 110%;
@@ -388,7 +419,7 @@ input {
 }
 .product-column {
   justify-content: flex-start;
-  padding: 5px 5px 0px 15px;
+  padding: 5px 5px 5px 15px;
 }
 .line-price,
 .line-quantity,
@@ -406,7 +437,7 @@ input {
   padding: 5px 5px 0px 15px;
 }
 .sort-img {
-  padding-left: 5px;
+  padding-left: 10px;
 }
 .scroll-table {
   overflow-y: auto;
@@ -429,13 +460,13 @@ input {
   font-size: 13px;
   margin-left: 5px;
 }
-.filter,
+.add-order,
 .some-icon,
 .mail {
   margin: 12px;
 }
 
-.filter {
+.add-order {
   cursor: pointer;
 }
 
@@ -555,7 +586,7 @@ input {
     display: inline;
   }
   .some-icon,
-  .filter,
+  .add-order,
   .orders-list * {
     display: none;
   }
@@ -623,14 +654,18 @@ form {
   min-height: 300px;
   width: 400px;
   position: absolute;
-  display: none;
-  transition: opacity 2s ease-in-out;
+  transition: opacity 1s ease-in-out;
   opacity: 0;
+  border-radius: 7px;
 }
-
+.overlay.active,
 form.active {
   opacity: 1;
-  display: block;
+  visibility: visible;
+  z-index: 30;
+}
+.overlay.active {
+  z-index: 20;
 }
 
 form h3 {
@@ -657,6 +692,49 @@ form h3 {
   display: none;
 }
 
-.processor-labels.active {
+.processor-labels.superactive {
   display: block;
+}
+
+.product-lists,
+.delete-product-lists {
+  position: absolute;
+  display: none;
+  height: 400px;
+  width: 250px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 5px;
+  z-index: 0;
+}
+#entered-quantity {
+  width: 70px;
+}
+.product-lists.active {
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  justify-content: space-between;
+}
+.delete-product-lists.active {
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  height: 200px;
+  justify-content: space-between;
+}
+.delete-select-products,
+.select-products {
+  margin: 10px 20px 10px 20px;
+  padding: 10px 10px 10px 10px;
+  overflow-y: auto;
+  background: rgb(255, 255, 255, 0.8);
+}
+
+.containerForProducts {
+  display: flex;
+  flex-direction: row;
+}
+.canc {
+  margin-left: 40px;
+  margin-right: 5px;
 }

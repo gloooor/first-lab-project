@@ -1,154 +1,3 @@
-let orders = [
-  {
-    id: "1",
-    OrderInfo: {
-      createdAt: "10.08.1991",
-      customer: "Alfryuoeds Futterkiste",
-      status: "Accepted",
-      shippedAt: "8.09.1991",
-    },
-    ShipTo: {
-      id: "12",
-      name: "Maria Anders",
-      Address: "Obere Str. 57",
-      ZIP: "12209",
-      Region: "Germany",
-      Country: "Germany",
-    },
-    CustomerInfo: {
-      firstName: "Maria",
-      lastName: "Anders",
-      address: "Obere Str. 57",
-      phone: "030-0074321",
-      email: "Maria.Anders@company.com",
-    },
-    products: [
-      {
-        id: "1",
-        name: "Chai",
-        price: "18",
-        currency: "EUR",
-        quantity: "2",
-        totalPrice: "36",
-      },
-      {
-        id: "2",
-        name: "Aniseed Syrup",
-        price: "10",
-        currency: "EUR",
-        quantity: "3",
-        totalPrice: "30",
-      },
-      {
-        id: "3",
-        name: "Chef Anton's Cajun Seasoning",
-        price: "22",
-        currency: "EUR",
-        quantity: "2",
-        totalPrice: "44",
-      },
-      {
-        id: "4",
-        name: "Chef Anton's Gumbo Mix",
-        price: "36",
-        currency: "EUR",
-        quantity: "21",
-        totalPrice: "756",
-      },
-      {
-        id: "5",
-        name: "Grandma's Boysenberry Spread",
-        price: "25",
-        currency: "EUR",
-        quantity: "5",
-        totalPrice: "125",
-      },
-    ],
-  },
-  {
-    id: "2",
-    OrderInfo: {
-      createdAt: "23.12.2006",
-      customer: "Bon app",
-      status: "Pending",
-      shippedAt: "13.02.2007",
-    },
-    ShipTo: {
-      id: "32",
-      name: "Laurence Lebihan",
-      Address: "12, rue des Bouchers",
-      ZIP: "13008",
-      Region: "France",
-      Country: "France",
-    },
-    CustomerInfo: {
-      firstName: "Laurence",
-      lastName: "Lebihan",
-      address: "12, rue des Bouchers",
-      phone: "91.24.45.40",
-      email: "Laurence.Lebihan@company.com",
-    },
-    products: [
-      {
-        id: "1",
-        name: "Queso Cabrales",
-        price: "21",
-        currency: "EUR",
-        quantity: "5",
-        totalPrice: "105",
-      },
-      {
-        id: "2",
-        name: "Queso Manchego La Pastora",
-        price: "38",
-        currency: "EUR",
-        quantity: "3",
-        totalPrice: "114",
-      },
-      {
-        id: "3",
-        name: "Pavlova",
-        price: "120",
-        currency: "EUR",
-        quantity: "5",
-        totalPrice: "600",
-      },
-      {
-        id: "4",
-        name: "Sir Rodney's Marmalade",
-        price: "5",
-        currency: "EUR",
-        quantity: "3",
-        totalPrice: "15",
-      },
-      {
-        id: "5",
-        name: "Genen Shouyu",
-        price: "40",
-        currency: "EUR",
-        quantity: "7",
-        totalPrice: "280",
-      },
-      {
-        id: "6",
-        name: "Tofu",
-        price: "23.25",
-        currency: "EUR",
-        quantity: "1",
-        totalPrice: "23.25",
-      },
-      {
-        id: "7",
-        name: "Alice Mutton",
-        price: "32",
-        currency: "EUR",
-        quantity: "39",
-        totalPrice: "1248",
-      },
-    ],
-  },
-];
-
 const items = document.querySelector(".items");
 const listTitleName = document.querySelector(".list-title-name");
 const tableTitle = document.querySelector(".table-title");
@@ -166,65 +15,72 @@ let totalCount = 0;
 let priceCount = 0;
 let nameCount = 0;
 let selectedOrderId = 0;
+let ordersLength = 0;
+let tablesLength = 0;
+let orderSum = 0;
 
-listTitleName.innerHTML = `Order (${orders.length})`;
-tableTitle.innerHTML = `Order (${orders.length})`;
+listTitleName.innerHTML = `Order (${ordersLength})`;
+tableTitle.innerHTML = `Order (${tablesLength})`;
+cost.innerHTML = orderSum;
 
+let currentOrderData;
 const selectOrder = (id) => {
+  orderSum = 0;
   let selId = document.getElementById(id);
   if (selId) selId.classList.remove("current");
   selectedOrderId = id;
   selId.classList.add("current");
-  showInfo(id);
+  fetch("/order/" + id)
+    .then((data) => data.json())
+    .then((data) => {
+      currentOrderData = data;
+      showInfo(data);
+    });
 };
 
-const showInfo = (orderId) => {
-  let order = orders.find((el) => {
-    return el.id === orderId;
-  });
-
-  if (order) {
-    tableSearchLine.value = "";
-    orderNum.innerHTML = order.id;
-    cost.innerHTML = sum(order);
-    commonCustomer.innerHTML = order.OrderInfo.customer;
-    commonOrdered.innerHTML = order.OrderInfo.createdAt;
-    commonShipped.innerHTML = order.OrderInfo.shippedAt;
-    shippingName.innerHTML = order.ShipTo.name;
-
-    shippingStreet.innerHTML = order.ShipTo.Address;
-    shippingCity.innerHTML = order.ShipTo.ZIP;
-    shippingRegion.innerHTML = order.ShipTo.Region;
-    shippingCountry.innerHTML = order.ShipTo.Country;
-    processorFirstName.innerHTML = order.CustomerInfo.firstName;
-    processorLastName.innerHTML = order.CustomerInfo.lastName;
-    processorAdress.innerHTML = order.ShipTo.Address;
-    processorPhone.innerHTML = order.CustomerInfo.phone;
-    processorEmail.innerHTML = order.CustomerInfo.email;
-    scrollTable.innerHTML = "";
-    tableTitle.innerHTML = `Line items (${order.products.length})`;
-    order.products.forEach((value) => showProductInfo(scrollTable, value));
-  }
+const showInfo = (currentOrder) => {
+  tableSearchLine.value = "";
+  orderNum.innerHTML = currentOrder.order.ID;
+  commonCustomer.innerHTML =
+    currentOrder.customer.FirstName + " " + currentOrder.customer.LastName;
+  commonOrdered.innerHTML = currentOrder.order.Created;
+  commonShipped.innerHTML = currentOrder.order.Shipped;
+  shippingName.innerHTML =
+    currentOrder.customer.FirstName + " " + currentOrder.customer.LastName;
+  shippingStreet.innerHTML = currentOrder.customer.Adress;
+  shippingCity.innerHTML = currentOrder.customer.Zip;
+  shippingRegion.innerHTML = currentOrder.customer.Region;
+  shippingCountry.innerHTML = currentOrder.customer.Country;
+  processorFirstName.innerHTML = currentOrder.customer.FirstName;
+  processorLastName.innerHTML = currentOrder.customer.LastName;
+  processorAdress.innerHTML = currentOrder.customer.Adress;
+  processorPhone.innerHTML = currentOrder.customer.Phone;
+  processorEmail.innerHTML = currentOrder.customer.Email;
+  scrollTable.innerHTML = "";
+  tableTitle.innerHTML = `Line items (${currentOrder.products.length})`;
+  currentOrder.products.forEach((value) => showProductInfo(scrollTable, value));
+  cost.innerHTML = orderSum;
 };
 
 const showProductInfo = (idl, line) => {
   let newdiv = document.createElement("div");
   newdiv.classList.add("details-line");
-  newdiv.id = line.id;
-  newdiv.innerHTML = `<div class="line-product">${line.name}<br />${
-    line.id
+  newdiv.id = line.prod.ID;
+  newdiv.innerHTML = `<div class="line-product">${line.prod.Name}<br />${
+    line.prod.ID
   }</div>
   <div class="title-hide">Unit Price</div>
   <div class="line-price">${
-    line.price + "<span>" + line.currency + "</span>"
+    line.prod.Price + "<span>" + line.prod.Currency + "</span>"
   }</div>
   <div class="title-hide">Quantity</div>
-  <div class="line-quantity">${line.quantity}</div>
+  <div class="line-quantity">${line.Quantity}</div>
   <div class="title-hide">Total</div>
   <div class="line-total">${
-    line.totalPrice + "<span>" + line.currency + "</span>"
+    line.prod.Price * line.Quantity + "<span>" + line.prod.Currency + "</span>"
   }</div>`;
   idl.appendChild(newdiv);
+  orderSum += line.prod.Price * line.Quantity;
 };
 
 // const openMenu = () => {
@@ -233,44 +89,46 @@ const showProductInfo = (idl, line) => {
 
 const addToList = (list, order) => {
   let newDiv = document.createElement("div");
-  newDiv.id = order.id;
+  newDiv.id = order.ID;
   newDiv.addEventListener("click", () => {
     let selected = document.getElementById(selectedOrderId);
     if (selected) selected.classList.remove("current");
-    showInfo((selectedOrderId = newDiv.id));
+    selectOrder((selectedOrderId = newDiv.id));
     newDiv.classList.add("current");
   });
   newDiv.classList.add("item");
   let stateColor;
-  if (order.OrderInfo.status === "Pending") {
+  if (order.OrderStatus.replace(/\s+/g, "") === "Pending") {
     stateColor = "orange";
-  } else if (order.OrderInfo.status === "Too late") {
+  } else if (order.OrderStatus.replace(/\s+/g, "") === "Late") {
     stateColor = "red";
-  } else if (order.OrderInfo.status === "Accepted") {
+  } else if (order.OrderStatus.replace(/\s+/g, "") === "Accepted") {
     stateColor = "green";
   }
   newDiv.innerHTML = `
     <div class="item-first-line">
     <div class="item-order">
       <span>Order</span>
-      <span class="order-id">${order.id}</span>
+      <span class="order-id">${order.ID}</span>
     </div>
-    <div class="date-order">${order.OrderInfo.createdAt}</div>
+    <div class="date-order">${order.Created}</div>
   </div>
   <p class="name-state">
-    <span class="client-name">${order.OrderInfo.customer}</span>
-    <span class="order-state ${stateColor}">${order.OrderInfo.status}</span>
+    <span class="client-name">HELLO</span>
+    <span class="order-state ${stateColor}">${order.OrderStatus.replace(
+    /\s+/g,
+    ""
+  )}</span>
   </p>
   <p>
     <span>Shipped:</span>
-    <span class="shipped-date-order">${order.OrderInfo.shippedAt}</span>
+    <span class="shipped-date-order">${order.Shipped}</span>
   </p>`;
   list.appendChild(newDiv);
 };
 
-const switcher = (p) => {
-  if (p == "s") {
-    //p-параметор s-значит шипин
+const switcher = (tab) => {
+  if (tab == "s") {
     shipping.classList.remove("non-display");
     shipping.classList.add("shipping");
     processor.classList.remove("processor");
@@ -278,7 +136,6 @@ const switcher = (p) => {
     shippedButton.classList.add("borderbottom");
     processorButton.classList.remove("borderbottom");
   } else {
-    //а это штука для мужика
     processor.classList.remove("non-display");
     processor.classList.add("processor");
     shipping.classList.remove("shipping");
@@ -303,19 +160,24 @@ const showicon = (str) => {
     hide.classList.remove("non-display");
   }
 };
-
 const setfilter = (el) => {
+  fetch("/orders")
+    .then((data) => data.json())
+    .then((data) => filterOrders(data, el));
+};
+const resetfilter = (el) => {
+  fetch("/orders")
+    .then((data) => data.json())
+    .then((data) => refilterOrders(data, el));
+};
+const filterOrders = (orders, filter) => {
   let s = "";
   let counter = 0;
-  if (el.value) {
+  if (filter.value) {
     items.innerHTML = "";
     orders.forEach((value) => {
-      s =
-        value.id +
-        value.OrderInfo.customer +
-        value.OrderInfo.shippedAt +
-        value.OrderInfo.createdAt;
-      if (s.toLowerCase().indexOf(el.value.toLowerCase()) >= 0) {
+      s = value.ID + value.Shipped + value.Created;
+      if (s.toLowerCase().indexOf(filter.value.toLowerCase()) >= 0) {
         selectedOrderId = value.id;
         addToList(items, value);
         counter++;
@@ -331,34 +193,29 @@ const setfilter = (el) => {
   }
 };
 
-const resetfilter = (el) => {
-  el.value = "";
+const refilterOrders = (orders, filter) => {
+  filter.value = "";
   items.innerHTML = "";
   orders.forEach((value) => addToList(items, value));
   if (orders.length > 0) {
-    selectOrder(orders[0].id);
-    showInfo(orders[0].id);
+    selectOrder(orders[0].ID);
   }
 };
 
-const setTableFilter = (el) => {
+const setTableFilter = (filter) => {
+  fetch("/order/" + selectedOrderId)
+    .then((data) => data.json())
+    .then((data) => filterTable(filter, data));
+};
+
+const filterTable = (filter, order) => {
   let s = "";
   let count = 0;
-  let order = orders.find((elem) => {
-    return elem.id === selectedOrderId;
-  });
-
-  if (el.value) {
+  if (filter.value) {
     scrollTable.innerHTML = "";
     order.products.forEach((val) => {
-      s =
-        val.id +
-        val.name +
-        val.price +
-        val.currency +
-        val.quantity +
-        val.totalPrices;
-      if (s.toLowerCase().indexOf(el.value.toLowerCase()) >= 0) {
+      s = val.prod.ID + val.prod.Name + val.prod.Price + val.Quantity;
+      if (s.toLowerCase().indexOf(filter.value.toLowerCase()) >= 0) {
         showProductInfo(scrollTable, val);
         count++;
       }
@@ -371,19 +228,15 @@ const setTableFilter = (el) => {
 };
 
 const resetTableFilter = (el) => {
-  el.value = "";
-  scrollTable.innerHTML = "";
-  const { id } = document.getElementById(selectedOrderId);
-  const order = orders.find((order) => order.id === id);
-  order.products.forEach((value) => showProductInfo(scrollTable, value));
+  fetch("/order/" + selectedOrderId)
+    .then((data) => data.json())
+    .then((data) => refilterTable(data, el));
 };
 
-const sum = (order) => {
-  let s = 0;
-  order.products.forEach((value) => {
-    s += +value.totalPrice;
-  });
-  return `${s.toFixed(2)}`;
+const refilterTable = (order, filter) => {
+  filter.value = "";
+  scrollTable.innerHTML = "";
+  order.products.forEach((value) => showProductInfo(scrollTable, value));
 };
 
 const sortByName = (param) => {
@@ -419,9 +272,13 @@ const sortByParam = (param, counter) => {
       b = parseInt(b.querySelector(param).innerText.toLowerCase());
       switch (counter) {
         case 1:
+          // document.querySelectorAll("sortByName").src =
+          //   "assets/images/dessort.png";
           return a - b;
           break;
         case 2:
+          // document.querySelectorAll(".sortByName").src =
+          //   "assets/images/close.png";
           return b - a;
           break;
         case 3:
@@ -451,24 +308,86 @@ sortByTotalBtn.addEventListener(
   () => (nameCount = sortByParam(".line-total", nameCount))
 );
 
-const form = document.querySelectorAll("form")[0];
+const form = document.querySelectorAll("form")[2];
+const prodForm = document.querySelectorAll("form")[0];
+const deleteProdForm = document.querySelectorAll("form")[1];
+const overlay = document.querySelector(".overlay");
 
-const openForm = () => {
+const mapCurrentOrderData = (id) => {
+  const obj = {
+    "creating-date": currentOrderData.order.Created,
+    "shipping-date": currentOrderData.order.Shipped,
+    "status-select": currentOrderData.order.OrderStatus.trim(),
+    address: currentOrderData.customer.Adress,
+    zip: currentOrderData.customer.Zip,
+    region: currentOrderData.customer.Region,
+    country: currentOrderData.customer.Country,
+    "first-name": currentOrderData.customer.FirstName,
+    "last-name": currentOrderData.customer.LastName,
+    company: currentOrderData.customer.Company,
+    email: currentOrderData.customer.Email,
+    phone: currentOrderData.customer.Phone,
+  };
+  return obj[id];
+};
+
+let isCreate;
+const openForm = (params) => {
+  isCreate = params === "create";
   const select = document.getElementById("processor-select");
+  fetch("/customers")
+    .then((data) => data.json())
+    .then((customers) => {
+      if (params === "create") {
+        customers
+          .filter(({ FirstName }) => FirstName)
+          .forEach((customer) => {
+            const option = document.createElement("option");
+            option.value = customer.ID;
+            option.innerText = customer.Company;
+            select.appendChild(option);
+          });
+      } else {
+        select.innerHTML = "";
+        customers
+          .filter(({ FirstName }) => FirstName)
+          .forEach((customer) => {
+            const option = document.createElement("option");
+            option.value = customer.ID;
+            option.innerText = customer.Company;
+            if (customer.ID === currentOrderData.customer.ID) {
+              option.selected = true;
+            }
+            select.appendChild(option);
+          });
 
-  orders.forEach((order) => {
-    const option = document.createElement("option");
-    option.value = order.ShipTo.id;
-    option.innerText = order.ShipTo.name;
-
-    select.appendChild(option);
-  });
+        [
+          "creating-date",
+          "shipping-date",
+          "status-select",
+          "address",
+          "zip",
+          "region",
+          "country",
+          "first-name",
+          "last-name",
+          "company",
+          "email",
+          "phone",
+        ].forEach((id) => {
+          document.getElementById(id).value = mapCurrentOrderData(id);
+        });
+      }
+    });
 
   form.classList.add("active");
+  overlay.classList.add("active");
 };
 
 const closeForm = () => {
   form.classList.remove("active");
+  overlay.classList.remove("active");
+  form.reset();
 };
 
 const getElementsByIds = (ids) =>
@@ -476,21 +395,24 @@ const getElementsByIds = (ids) =>
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
-
   const [
-    date,
-    address,
-    zip,
-    region,
-    country,
-    firstname,
-    lastname,
-    company,
-    email,
-    phone,
-    select,
+    Created,
+    Shipped,
+    OrderStatus,
+    Adress,
+    Zip,
+    Region,
+    Country,
+    FirstName,
+    LastName,
+    Company,
+    Email,
+    Phone,
+    processorSelect,
   ] = getElementsByIds([
-    "date",
+    "creating-date",
+    "shipping-date",
+    "status-select",
     "address",
     "zip",
     "region",
@@ -502,79 +424,242 @@ form.addEventListener("submit", (e) => {
     "phone",
     "processor-select",
   ]);
+  if (isCreate) {
+    fetch("/order", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(
+        processorSelect !== "0"
+          ? { Created, Shipped, OrderStatus, processorSelect }
+          : {
+              Created,
+              Shipped,
+              OrderStatus,
+              Adress,
+              Zip,
+              Region,
+              Country,
+              FirstName,
+              LastName,
+              Company,
+              Email,
+              Phone,
+            }
+      ),
+    }).then(() => {
+      fetch("/orders")
+        .then((data) => data.json())
+        .then((data) => createOrder(data));
+    });
+  } else {
+    fetch("/order", {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        processorSelect,
+        Created,
+        Shipped,
+        OrderStatus,
+        Adress,
+        Zip,
+        Region,
+        Country,
+        FirstName,
+        LastName,
+        Company,
+        Email,
+        Phone,
+        ID: selectedOrderId,
+        isOpened,
+      }),
+    }).then(() => {
+      fetch("/orders")
+        .then((data) => data.json())
+        .then((data) => createOrder(data));
+    });
+  }
 
-  fetch("/send", {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(
-      select !== "0"
-        ? { select }
-        : {
-            date,
-            address,
-            zip,
-            region,
-            country,
-            firstname,
-            lastname,
-            company,
-            email,
-            phone,
-          }
-    ),
-  }).then((data) => console.log(data.json()));
+  form.reset();
+  form.classList.remove("active");
+  overlay.classList.remove("active");
 });
 
-const openLabels = () => {
-  const btn = document.getElementById("toggleBtn");
+const btn = document.getElementById("toggleBtn");
+
+let isOpened = false;
+btn.addEventListener("click", (e) => {
+  e.preventDefault();
+
   const el = document.getElementById("processor-labels");
   const text = btn.innerText;
 
   if (text === "Create") btn.innerText = "Close";
   else btn.innerText = "Create";
 
-  el.classList.toggle("active");
-};
+  [
+    "creating-date",
+    "shipping-date",
+    "status-select",
+    "address",
+    "zip",
+    "region",
+    "country",
+    "first-name",
+    "last-name",
+    "company",
+    "email",
+    "phone",
+    "processor-select",
+  ].forEach(
+    (id) =>
+      (document.getElementById(id).required = text === "Create" ? true : false)
+  );
+
+  el.classList.toggle("superactive");
+  isOpened = !isOpened;
+});
 
 window.onload = () => {
   fetch("/orders")
     .then((data) => data.json())
-    .then(({ data }) => createOrder(data));
+    .then((data) => {
+      createOrder(data);
+    });
 };
 
 function createOrder(ordersFromServer) {
-  console.log(ordersFromServer);
+  items.innerHTML = "";
+  ordersFromServer.forEach((value) => {
+    addToList(items, value);
+  });
+  selectOrder(ordersFromServer[0].ID);
+}
+//хз тут типа два раза тыкать нужно
+const deleteOrder = () => {
+  fetch("/order/" + selectedOrderId, {
+    method: "DELETE",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  }).then(() =>
+    fetch("/orders")
+      .then((data) => data.json())
+      .then((data) => createOrder(data))
+  );
+};
 
-  if (orders.length > 0) {
-    items.innerHTML = "";
+let selectedProductId = 0;
+const productsLists = document.querySelector(".product-lists");
+const selectedProducts = document.querySelector(".select-products");
+const deleteProductsLists = document.querySelector(".delete-product-lists");
+const deletSelectedProducts = document.querySelector(".delete-select-products");
 
-    const defaultOrder = orders[0];
-
-    ordersFromServer.forEach((value) => {
-      addToList(
-        items,
-        Object.assign({}, defaultOrder, {
-          OrderInfo: {
-            createdAt: value.Created,
-            customer: value.CustomerId,
-            status: value.OrderStatus,
-            shippedAt: value.Shipped,
-          },
-        })
-      );
+const editProductLists = () => {
+  fetch("/products")
+    .then((res) => res.json())
+    .then((products) => {
+      products.forEach((product) => {
+        const div = document.createElement("div");
+        div.innerHTML = product.Name + " " + product.Price;
+        div.id = product.ID + "d";
+        div.addEventListener("click", () => {
+          let selected = document.getElementById(selectedProductId);
+          if (selected) selected.classList.remove("current");
+          selectedProductId = div.id;
+          div.classList.add("current");
+        });
+        selectedProducts.appendChild(div);
+      });
     });
 
-    // orders.forEach((value) => {
+  productsLists.classList.toggle("active");
+};
+const closeProductForm = () => {
+  prodForm.classList.remove("active");
+  overlay.classList.remove("active");
+  selectedProducts.innerHTML = "";
+  prodForm.reset();
+};
 
-    //   addToList(items, value)
+prodForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  let ProductId = selectedProductId + "";
+  fetch("/order/" + selectedOrderId + "/product", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      ProductId: ProductId.slice(0, -1),
+      Quantity: document.getElementById("entered-quantity").value,
+    }),
+  }).then(() => {
+    fetch("/order/" + selectedOrderId)
+      .then((data) => data.json())
+      .then((data) => {
+        currentOrderData = data;
+        showInfo(data);
+      });
+  });
 
-    // });
-    selectOrder(orders[0].id);
-    showInfo(orders[0].id);
-  }
+  selectedProducts.innerHTML = "";
+  prodForm.reset();
+  prodForm.classList.remove("active");
+  overlay.classList.remove("active");
+});
 
-  orders.forEach((order) => {});
-}
+let removingProducts = [];
+const deleteProductLists = () => {
+  currentOrderData.products.forEach((product) => {
+    const div = document.createElement("div");
+    div.innerHTML = product.prod.Name + " " + product.prod.Price;
+    div.id = product.prod.ID + "v";
+    div.addEventListener("click", () => {
+      let id = div.id + "";
+      removingProducts.push(id.slice(0, -1));
+      div.classList.add("current");
+    });
+    deletSelectedProducts.appendChild(div);
+  });
+  deleteProductsLists.classList.toggle("active");
+};
+
+deleteProdForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  removingProducts.forEach((el) => {
+    fetch("/order/" + selectedOrderId + "/product/" + el, {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    }).then(() => {
+      fetch("/order/" + selectedOrderId)
+        .then((data) => data.json())
+        .then((data) => {
+          currentOrderData = data;
+          showInfo(data);
+        });
+    });
+  });
+  removingProducts = [];
+  deleteProdForm.reset();
+  deleteProdForm.classList.remove("active");
+  deletSelectedProducts.innerHTML = "";
+  overlay.classList.remove("active");
+});
+
+const closeDeletingForm = () => {
+  deleteProdForm.classList.remove("active");
+  overlay.classList.remove("active");
+  deletSelectedProducts.innerHTML = "";
+  deleteProdForm.reset();
+};

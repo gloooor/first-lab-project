@@ -26,50 +26,36 @@ app.get("/orders", async (req, res) => {
   }
 });
 
+// app.post("/send", (req, res) => {
+//   let data = req.body;
+//   res.send({ data });
+// });
 app.get("/order/:id", async (req, res) => {
   try {
     let products = [];
+    let fullProd;
     const order = await Order.findByPk(req.params.id);
-    const customer = await Customer.findByPk(order.ID);
+    const customer = await Customer.findByPk(order.CustomerId);
     const orderProduct = await OrderProduct.findAll({
       where: { OrderId: order.ID },
     });
     for await (const el of orderProduct) {
       const prod = await Product.findByPk(el.ProductId);
-      products.push(prod);
+      fullProd = { prod, Quantity: el.Quantity };
+      products.push(fullProd);
     }
-    res.send({ order, customer, orderProduct, products });
+    fullProd;
+    res.send({ order, customer, products });
   } catch (err) {
     res.send("Order isn't found");
   }
 });
 
-// {
-//   "Created": "2019-11-14",
-//   "Shipped": "2019-12-04",
-//   "OrderStatus": "Accepted ",
-//   "FirstName": "KsbJKSDFHJDFH",
-//   "LastName": "Lenovec",
-//   "Company": "SiMi",
-//   "Adress": "Larenko Str. 98",
-//   "Zip": "957254",
-//   "Phone": "+26483758945",
-//   "Email": "simisimi@gmail.com",
-//   "Region": "JK",
-//   "Country": "Spain"
-//   }
-
-// {
-//   "Created": "2019-11-14",
-//   "Shipped": "2019-12-04",
-//   "OrderStatus": "Accepted ",
-//   "select": 3
-//   }
 app.post("/order", async (req, res) => {
   if (!req.body) res.status(400).send("Failed to post");
   try {
-    if (req.body.select) {
-      const customer = await Customer.findByPk(req.body.select);
+    if (req.body.processorSelect) {
+      const customer = await Customer.findByPk(req.body.processorSelect);
       const order = await Order.create({
         Created: req.body.Created,
         Shipped: req.body.Shipped,
@@ -104,23 +90,38 @@ app.post("/order", async (req, res) => {
   }
 });
 
-// {
-//   "Created": "2019-11-14",
-//   "Shipped": "2019-12-04",
-//   "OrderStatus": "Accepted ",
-//   "CustomerId": 3
-//   }
 app.put("/order", async (req, res) => {
   if (!req.body) res.status(400).send("Failed to change");
   try {
     const counter = await Order.count({ where: { ID: req.body.ID } });
     if (counter != 0) {
+      if (req.body.isOpened) {
+        await Customer.update(
+          {
+            FirstName: req.body.FirstName,
+            LastName: req.body.LastName,
+            Company: req.body.Company,
+            Adress: req.body.Adress,
+            Zip: req.body.Zip,
+            Phone: req.body.Phone,
+            Email: req.body.Email,
+            Region: req.body.Region,
+            Country: req.body.Country,
+          },
+          {
+            where: {
+              ID: req.body.processorSelect,
+            },
+          }
+        );
+      }
+
       const result = await Order.update(
         {
           Created: req.body.Created,
           Shipped: req.body.Shipped,
           OrderStatus: req.body.OrderStatus,
-          CustomerId: req.body.CustomerId,
+          CustomerId: req.body.processorSelect,
         },
         {
           where: {
@@ -128,6 +129,7 @@ app.put("/order", async (req, res) => {
           },
         }
       );
+
       res.send("Order is changed");
     } else {
       res.status(404).send("Cannot find order with same id");
@@ -159,6 +161,16 @@ app.delete("/order/:id", async (req, res) => {
     res.status(404).send("Cannot find order with same id");
   }
 });
+app.get("/customers", async (req, res) => {
+  try {
+    const result = await Customer.findAll();
+    res.json(result);
+  } catch (err) {
+    res.json({
+      error: err.message,
+    });
+  }
+});
 
 app.get("/products", async (req, res) => {
   try {
@@ -187,11 +199,6 @@ app.get("/product/:id", async (req, res) => {
   }
 });
 
-// {
-//   "Name": "Tomato",
-//   "Price": 6,
-//   "Currency": "$"
-// }
 app.post("/product", async (req, res) => {
   if (!req.body) res.status(400).send("Failed to post");
   try {
@@ -203,19 +210,12 @@ app.post("/product", async (req, res) => {
       res.status(404).send(`${req.body.Name} product already exist`);
     }
   } catch (err) {
-    console.log(err.message);
     res.json({
       error: err,
     });
   }
 });
 
-// {
-//   "ID": 7,
-//   "Name": "Tomatnhjbho",
-//   "Price": 6,
-//   "Currency": "$"
-// }
 app.put("/product", async (req, res) => {
   if (!req.body) res.status(400).send("Failed to change");
   try {
@@ -264,10 +264,23 @@ app.delete("/product/:id", async (req, res) => {
   }
 });
 
-// {
-//   "ProductId": 3,
-//   "Quantity": 34
-// }
+app.get("/order/:id/products", async (req, res) => {
+  try {
+    let products = [];
+    const order = await Order.findByPk(req.params.id);
+    const customer = await Customer.findByPk(order.CustomerId);
+    const orderProduct = await OrderProduct.findAll({
+      where: { OrderId: order.ID },
+    });
+    for await (const el of orderProduct) {
+      const prod = await Product.findByPk(el.ProductId);
+      products.push(prod);
+    }
+    res.send({ products });
+  } catch (err) {
+    res.send("Order isn't found");
+  }
+});
 
 app.post("/order/:id/product", async (req, res) => {
   if (!req.body) res.status(400).send("Failed to post");
