@@ -26,10 +26,6 @@ app.get("/orders", async (req, res) => {
   }
 });
 
-// app.post("/send", (req, res) => {
-//   let data = req.body;
-//   res.send({ data });
-// });
 app.get("/order/:id", async (req, res) => {
   try {
     let products = [];

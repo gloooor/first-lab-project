@@ -1,4 +1,4 @@
-const items = document.querySelector(".items");
+const itemss = document.querySelector(".items");
 const listTitleName = document.querySelector(".list-title-name");
 const tableTitle = document.querySelector(".table-title");
 const sortByNameBtn = document.querySelector("#sortByName");
@@ -9,6 +9,18 @@ const sortByTotalBtn = document.querySelector("#sortByTotal");
 const hide = document.querySelector("#reload");
 const hideTable = document.querySelector("#table-reload");
 const ordersList = document.querySelector(".orders-list");
+const items = document.querySelectorAll(".details-line");
+const form = document.querySelectorAll("form")[2];
+const prodForm = document.querySelectorAll("form")[0];
+const deleteProdForm = document.querySelectorAll("form")[1];
+const overlay = document.querySelector(".overlay");
+const select = document.getElementById("processor-select");
+const btn = document.getElementById("toggleBtn");
+const el = document.getElementById("processor-labels");
+const productsLists = document.querySelector(".product-lists");
+const selectedProducts = document.querySelector(".select-products");
+const deleteProductsLists = document.querySelector(".delete-product-lists");
+const deletSelectedProducts = document.querySelector(".delete-select-products");
 
 let quantityCount = 0;
 let totalCount = 0;
@@ -83,10 +95,6 @@ const showProductInfo = (idl, line) => {
   orderSum += line.prod.Price * line.Quantity;
 };
 
-// const openMenu = () => {
-//   ordersList.classList.add("open");
-// };
-
 const addToList = (list, order) => {
   let newDiv = document.createElement("div");
   newDiv.id = order.ID;
@@ -160,11 +168,14 @@ const showicon = (str) => {
     hide.classList.remove("non-display");
   }
 };
+
+/////////filtres///////////
 const setfilter = (el) => {
   fetch("/orders")
     .then((data) => data.json())
     .then((data) => filterOrders(data, el));
 };
+
 const resetfilter = (el) => {
   fetch("/orders")
     .then((data) => data.json())
@@ -174,19 +185,19 @@ const filterOrders = (orders, filter) => {
   let s = "";
   let counter = 0;
   if (filter.value) {
-    items.innerHTML = "";
+    itemss.innerHTML = "";
     orders.forEach((value) => {
       s = value.ID + value.Shipped + value.Created;
       if (s.toLowerCase().indexOf(filter.value.toLowerCase()) >= 0) {
         selectedOrderId = value.id;
-        addToList(items, value);
+        addToList(itemss, value);
         counter++;
       }
     });
     if (counter <= 0) {
-      items.innerHTML = "no orders";
+      itemss.innerHTML = "no orders";
     } else {
-      let elem = items.querySelectorAll(".item")[0];
+      let elem = itemss.querySelectorAll(".item")[0];
       selectOrder(elem.id);
     }
     listTitleName.innerHTML = `Order (${counter})`;
@@ -195,9 +206,10 @@ const filterOrders = (orders, filter) => {
 
 const refilterOrders = (orders, filter) => {
   filter.value = "";
-  items.innerHTML = "";
-  orders.forEach((value) => addToList(items, value));
+  itemss.innerHTML = "";
+  orders.forEach((value) => addToList(itemss, value));
   if (orders.length > 0) {
+    listTitleName.innerHTML = `Order (${orders.length})`;
     selectOrder(orders[0].ID);
   }
 };
@@ -238,10 +250,9 @@ const refilterTable = (order, filter) => {
   scrollTable.innerHTML = "";
   order.products.forEach((value) => showProductInfo(scrollTable, value));
 };
-
+////////////sorting//////////////
 const sortByName = (param) => {
   nameCount++;
-  const items = document.querySelectorAll(".details-line");
   Array.from(items)
     .sort((a, b) => {
       a = a.querySelector(param).innerText.toLowerCase();
@@ -308,10 +319,7 @@ sortByTotalBtn.addEventListener(
   () => (nameCount = sortByParam(".line-total", nameCount))
 );
 
-const form = document.querySelectorAll("form")[2];
-const prodForm = document.querySelectorAll("form")[0];
-const deleteProdForm = document.querySelectorAll("form")[1];
-const overlay = document.querySelector(".overlay");
+///////////////forms///////////////
 
 const mapCurrentOrderData = (id) => {
   const obj = {
@@ -334,7 +342,6 @@ const mapCurrentOrderData = (id) => {
 let isCreate;
 const openForm = (params) => {
   isCreate = params === "create";
-  const select = document.getElementById("processor-select");
   fetch("/customers")
     .then((data) => data.json())
     .then((customers) => {
@@ -386,6 +393,7 @@ const openForm = (params) => {
 
 const closeForm = () => {
   form.classList.remove("active");
+  select.innerHTML = "";
   overlay.classList.remove("active");
   form.reset();
 };
@@ -485,18 +493,15 @@ form.addEventListener("submit", (e) => {
     });
   }
 
+  select.innerHTML = "";
   form.reset();
   form.classList.remove("active");
   overlay.classList.remove("active");
 });
 
-const btn = document.getElementById("toggleBtn");
-
 let isOpened = false;
 btn.addEventListener("click", (e) => {
   e.preventDefault();
-
-  const el = document.getElementById("processor-labels");
   const text = btn.innerText;
 
   if (text === "Create") btn.innerText = "Close";
@@ -534,13 +539,16 @@ window.onload = () => {
 };
 
 function createOrder(ordersFromServer) {
-  items.innerHTML = "";
+  itemss.innerHTML = "";
+  let counter = 0;
   ordersFromServer.forEach((value) => {
-    addToList(items, value);
+    addToList(itemss, value);
+    counter++;
   });
+  listTitleName.innerHTML = `Order (${counter})`;
   selectOrder(ordersFromServer[0].ID);
 }
-//хз тут типа два раза тыкать нужно
+
 const deleteOrder = () => {
   fetch("/order/" + selectedOrderId, {
     method: "DELETE",
@@ -556,10 +564,6 @@ const deleteOrder = () => {
 };
 
 let selectedProductId = 0;
-const productsLists = document.querySelector(".product-lists");
-const selectedProducts = document.querySelector(".select-products");
-const deleteProductsLists = document.querySelector(".delete-product-lists");
-const deletSelectedProducts = document.querySelector(".delete-select-products");
 
 const editProductLists = () => {
   fetch("/products")
@@ -578,7 +582,7 @@ const editProductLists = () => {
         selectedProducts.appendChild(div);
       });
     });
-
+  overlay.classList.add("active");
   productsLists.classList.toggle("active");
 };
 const closeProductForm = () => {
@@ -629,6 +633,7 @@ const deleteProductLists = () => {
     });
     deletSelectedProducts.appendChild(div);
   });
+  overlay.classList.add("active");
   deleteProductsLists.classList.toggle("active");
 };
 
